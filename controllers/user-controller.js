@@ -1,7 +1,7 @@
 const { User } = require('../models');
 
 const userController = {
-    // get all Users
+    // GET all Users
     getAllUser(req, res){
         User.find({})//finds all users already
             /* can I 
@@ -19,7 +19,7 @@ const userController = {
             });
 
     },
-    // get single user by Id
+    // GET single user by Id
     getUserById({ params }, res){
         User.findOne({ _id: params.id })//finds the user
             //not sure if should populate thoughts as well
@@ -35,13 +35,13 @@ const userController = {
                 res.status(400).json(err);
             });
     },
-    // post new user
+    // POST new user
     createUser({ body }, res){
         User.create(body)
             .then(userData => res.json(userData))
             .catch(err => res.status(400).json(err))
     },
-    // update user by Id
+    // PUT update user by Id
     updateUser({ params, body }, res){
         User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
         .then(userData => {
@@ -53,7 +53,7 @@ const userController = {
         })
         .catch(err => res.status(400).json(err));
     },
-    // delete user by id
+    // DELETE user by id
     deleteUser({ params }, res){
         User.deleteOne({ _id: params.id })
             .then(userData => {
@@ -65,7 +65,7 @@ const userController = {
             })
             .catch(err => res.status(400).json(err));
     },
-    // /:userId/friends/
+    // PUT create friend /:userId/friends/
     createFriend({ params, body }, res){
         User.findOneAndUpdate({ _id: params.userId }, { $push: { friends: body } }, { new: true, runValidators: true })
             .then(friendData => {
@@ -78,8 +78,8 @@ const userController = {
             })
             .catch(err => res.status(400).json(err));
     },
-    // /:userId/friends/:friendId
-    removeFriend({ params, body }, res){
+    // DELETE friend /:userId/friends/:friendId
+    removeFriend({ params }, res){
         User.findOneAndDelete({ _id: params.userId }, { $pull: { friends: { _id: params.friendId }}})
             .then(friendData => {
                 if (!friendData) {

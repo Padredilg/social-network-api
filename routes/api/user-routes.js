@@ -11,23 +11,20 @@ const {
 
 // localhost:3001/api/users
 router.route('/')
-    .get(getAllUser)//get all users
-    .post(createUser);//post a new user
-
-    /*{
-        "username": "lernantino",
-        "email": "lernantino@gmail.com"
-    }*/
+    .get(getAllUser)
+    .post(createUser);
 
 // localhost:3001/api/users/:id
 router.route('/:id')
-    .get(getUserById)//get single user by id
-    .put(updateUser)//update user by id
-    .delete(deleteUser)//delete user by id
+    .get(getUserById)
+    .put(updateUser)
+    .delete(deleteUser)
 
+// localhost:3001/api/users/:userId/friends
 router.route('/:userId/friends')
-    .post(createFriend)
+    .put(createFriend)
 
+// localhost:3001/api/users/:userId/friends/:friendId
 router.route('/:userId/friends/:friendId')
     .delete(removeFriend)
 

@@ -2,7 +2,7 @@ const { Thought, User } = require('../models');
 
 const thoughtController = {
     // GET all thoughts
-    getAllThought:(req, res)=>{
+    getAllThought: (req, res)=>{
         Thought.find({})//finds all thoughts
             .then(thoughtsData => res.json(thoughtsData))
             .catch(err => {
@@ -14,7 +14,7 @@ const thoughtController = {
 
     // GET single thought by /:id
     getThoughtById: ({ params }, res)=>{
-        Thought.findOne({ _id: params.id })//finds the thought
+        Thought.findOne({ _id: params.id })//finds the thought by its ID
             //not sure if should populate thoughts as well
             .then(thoughtData => {
                 if(!thoughtData){
@@ -32,8 +32,18 @@ const thoughtController = {
     // POST new thought
     createThought: ({ body }, res) =>{
         Thought.create(body)
-            .then(thoughtData => res.json(thoughtData))
+            .then(thoughtData => {
+                res.json(thoughtData)
+            })
             .catch(err => res.status(400).json(err))
+
+        // push created thought _id to associated user thoughts array
+        // example data:
+        // {
+        //   "thoughtText": "Here's a cool thought...",
+        //   "username": "lernantino",
+        //   "userId": "5edff358a0fcb779aa7b118b"
+        // } 
     },
     
     // PUT update thought by /:id
@@ -62,7 +72,7 @@ const thoughtController = {
             .catch(err => res.status(400).json(err));
     },
 
-    // /:thoughtId/reactions
+    // PUT create reaction in a thought /:thoughtId/reactions
     createReaction: ({ params, body } , res) =>{
         Thought.findOneAndUpdate(
             { _id: params.thoughtId }, 
@@ -78,8 +88,8 @@ const thoughtController = {
             })
     },
 
-    // /:thoughtId/reactions/:reactionId
-    deleteReaction: ( { params }, res) =>{
+    // DELETE reaction from a thought /:thoughtId/reactions/:reactionId
+    deleteReaction: ({ params }, res) =>{
         Thought.findOneAndDelete(
             { _id: params.thoughtId },
             { $pull: { reactions: { reactionId: params.reactionId }}}

@@ -9,26 +9,22 @@ const {
     deleteReaction
 } = require('../../controllers/thought-controller');
 
+// localhost:3001/api/thoughts
 router.route('/')
-    .get(getAllThought)// Get all thoughts
-    .post(createThought);//create new thought
+    .get(getAllThought)
+    .post(createThought);
 
-// push created thought _id to associated user thoughts array
-// example data:
-// {
-//   "thoughtText": "Here's a cool thought...",
-//   "username": "lernantino",
-//   "userId": "5edff358a0fcb779aa7b118b"
-// } meaning req can be destructured to { body }
-
+// localhost:3001/api/thoughts/:id
 router.route('/:id')
-    .get(getThoughtById)// Get thoughts by ID
-    .put(updateThought)// update thought by ID
-    .delete(deleteThought);// Delete thought by ID
+    .get(getThoughtById)
+    .put(updateThought)
+    .delete(deleteThought);
 
+// localhost:3001/api/thoughts/:thoughtId/reactions
 router.route('/:thoughtId/reactions')
     .post(createReaction)//create a reaction stored in a single thought's reactions array field
 
+// localhost:3001/api/thoughts/:thoughtId/reactions/:reactionId
 router.route('/:thoughtId/reactions/:reactionId')
     .delete(deleteReaction)//pull and remove a reaction by the reaction's reactionId value
     
