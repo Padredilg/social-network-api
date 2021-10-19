@@ -72,11 +72,11 @@ const thoughtController = {
             .catch(err => res.status(400).json(err));
     },
 
-    // PUT create reaction in a thought /:thoughtId/reactions
+    // POST create reaction in a thought /:thoughtId/reactions
     createReaction: ({ params, body } , res) =>{
         Thought.findOneAndUpdate(
             { _id: params.thoughtId }, 
-            { $push: { reactions: body } },
+            { $addToSet: { reactions: body } },
             { new: true, runValidators: true }
         )
             .then(thoughtData => {
