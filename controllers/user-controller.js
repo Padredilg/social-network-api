@@ -55,13 +55,38 @@ const userController = {
     },
     // delete user by id
     deleteUser({ params }, res){
-        User.findOneAndDelete({ _id: params.id })
+        User.deleteOne({ _id: params.id })
             .then(userData => {
                 if (!userData) {
                     res.status(404).json({ message: 'No user found with this id!' });
                     return;
                 }
                 res.json(userData);
+            })
+            .catch(err => res.status(400).json(err));
+    },
+    // /:userId/friends/
+    createFriend({ params, body }, res){
+        User.findOneAndUpdate({ _id: params.userId }, { $push: { friends: body } }, { new: true, runValidators: true })
+            .then(friendData => {
+                if (!friendData) {
+                    res.status(404).json({ message: 'No user found with this id!' });
+                    return;
+                }
+
+                res.json(friendData)
+            })
+            .catch(err => res.status(400).json(err));
+    },
+    // /:userId/friends/:friendId
+    removeFriend({ params, body }, res){
+        User.findOneAndDelete({ _id: params.userId }, { $pull: { friends: { _id: params.friendId }}})
+            .then(friendData => {
+                if (!friendData) {
+                    res.status(404).json({ message: 'No user found with this id!' });
+                    return;
+                }
+                res.json(friendData)
             })
             .catch(err => res.status(400).json(err));
     }
