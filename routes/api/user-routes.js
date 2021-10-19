@@ -10,7 +10,8 @@ const {
 // localhost:3001/api/users
 router.route('/')
     .get(getAllUser)//get all users
-    .post(createUser)//post a new user
+    .post(createUser);//post a new user
+
     /*{
         "username": "lernantino",
         "email": "lernantino@gmail.com"

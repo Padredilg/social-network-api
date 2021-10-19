@@ -19,7 +19,6 @@ const userController = {
             });
 
     },
-
     // get single user by Id
     getUserById({ params }, res){
         User.findOne({ _id: params.id })//finds the user
@@ -36,14 +35,12 @@ const userController = {
                 res.status(400).json(err);
             });
     },
-
     // post new user
     createUser({ body }, res){
         User.create(body)
             .then(userData => res.json(userData))
             .catch(err => res.status(400).json(err))
     },
-
     // update user by Id
     updateUser({ params, body }, res){
         User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
@@ -56,7 +53,6 @@ const userController = {
         })
         .catch(err => res.status(400).json(err));
     },
-
     // delete user by id
     deleteUser({ params }, res){
         User.findOneAndDelete({ _id: params.id })
@@ -69,6 +65,8 @@ const userController = {
             })
             .catch(err => res.status(400).json(err));
     }
+    
+    // BONUS: Remove a user's associated thoughts when deleted.
 }
 
 //This will be required by routes
