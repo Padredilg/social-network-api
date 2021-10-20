@@ -23,7 +23,7 @@ router.route('/:id')
 // localhost:3001/api/users/:userId/friends/:friendId
 router.route('/:userId/friends/:friendId')
     .post(createFriend)
-    .delete(removeFriend)
+    .put(removeFriend)
 
 
 module.exports = router;

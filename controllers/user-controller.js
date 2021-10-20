@@ -1,17 +1,12 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 const userController = {
     // GET all Users
     getAllUser(req, res){
-        User.find({})//finds all users already
-            /* can I 
-
+        User.find({})//finds all users alreadycan I 
             .populate({ path: 'thoughts', select: '-__v'})
-            .select('-__v') 
-
-            to get all thoughts created by this user?
-            */
-            .sort({_id: -1})//sort alphabetically I think
+            .select('-__v')
+            .sort({username: "asc"})
             .then(userData => res.json(userData))
             .catch(err => {
                 console.log(err);
@@ -54,7 +49,11 @@ const userController = {
         .catch(err => res.status(400).json(err));
     },
     // DELETE user by id
-    deleteUser({ params }, res){
+    async deleteUser({ params }, res){
+        const user = await User.findById(params.id);
+        await Thought.deleteMany(
+            { username: user.username }
+        );
         User.deleteOne({ _id: params.id })
             .then(userData => {
                 if (!userData) {
@@ -80,9 +79,9 @@ const userController = {
     },
     // DELETE friend /:userId/friends/:friendId
     removeFriend({ params }, res){
-        User.findOneAndDelete(
+        User.findOneAndUpdate(
                 { _id: params.userId }, 
-                { $pull: { friends: { _id: params.friendId }}},
+                { $pull: { friends: params.friendId }},
                 { new: true, runValidators: true }   
             )
             .then(friendData => {

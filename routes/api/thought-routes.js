@@ -26,7 +26,7 @@ router.route('/:thoughtId/reactions')
 
 // localhost:3001/api/thoughts/:thoughtId/reactions/:reactionId
 router.route('/:thoughtId/reactions/:reactionId')
-    .delete(deleteReaction)//pull and remove a reaction by the reaction's reactionId value
+    .put(deleteReaction)//pull and remove a reaction by the reaction's reactionId value
     
 
 module.exports = router;
